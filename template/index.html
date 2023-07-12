@@ -1,0 +1,50 @@
+<!doctype html>
+<head>
+  <link rel="stylesheet"
+  href="http://fonts.googleapis.com/css?family=Geologica|Caprasimo">
+  <link rel="stylesheet" href="styles.css">
+  <script src="http://kit.fontawesome.com/d2b6de6901.js" crossorigin="anonymous"></script>
+  <script src="fit.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      resizeText({
+          elements: document.querySelectorAll('.autofit')
+      });
+    });
+  </script>
+</head>
+
+<html>  
+</h1>
+    <body>
+      <div class="frame">
+        {{#file}}
+        <div class="header">
+          <div class="song-info">
+            <h1>{{title}}</h2>
+            <h2>{{artist}}</h2>
+            <h3>{{album}}</h3>
+
+            <h4>{{date}} - {{duration}} - {{encoded}}</h4>
+          </div>
+          <img src="http://music.local{{coverurl}}">
+        </div>
+          
+        <div class="lyrics">
+          <div class="autofit">
+            {{#lyrics}}<span>{{.}}</span>{{/lyrics}}
+            {{^lyrics}}<span>No </span><span>Lyrics </span><span>Found.</span>{{/lyrics}}
+          </div>
+        </div>
+          
+        {{/file}}
+        {{^file}}
+          <h1>NO PLAYBACK</h1>
+        {{/file}}
+
+        <div class="footer">
+          <h3 class="battery"><i class="fa-solid fa-bolt"></i>{{battery}} <i class="fa-solid fa-wifi"></i>{{addr}} </h3>
+        </div>
+      </div>
+    </body>
+</html>

@@ -1,0 +1,145 @@
+html {
+    width: 600px;
+    height: 800px;
+    @media (min-width: 800px) {
+        border: 1px solid red;
+    }
+    color: #000;
+    font-family: 'Geologica', serif;
+    font-weight: 600;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0;
+    background-color: white; 
+    box-sizing: border-box;
+}
+
+.frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+    @media (min-width: 800px) {
+        border: 1px solid blueviolet;
+    }
+    overflow: hidden;
+}
+
+img {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    right: 0px;
+    top: 0px;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+    margin: 0 0 10px 0;
+    font-family: 'Caprasimo', sans-serif;
+}
+
+h1 {
+    line-height: 40px;
+}
+
+h2, h3, h4 {
+    line-height: 20px;
+}
+
+h1 {
+    font-weight: 400;
+    font-size: 34px;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: 300;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: 200;
+}
+
+h4 {
+    font-size: 15px;
+    font-family: 'Geologica', serif;
+    font-style: italic;
+    font-weight: 100;
+}
+
+
+
+.lyrics {
+    position: absolute;
+    top: 164px;
+    left: 8px;
+    right: 16px;
+    height: 598px;
+    text-align: right;
+    align-items: center;
+    display: flex;
+}
+
+.autofit {
+    width: 100%;
+    line-height: 1.4em;
+
+    > span {
+        padding: 0 6px;
+        &:nth-child(even) {
+            color: white;
+            background-color: black;
+        }
+        &:nth-child(odd) {
+            color: black;
+        }
+    }
+}
+
+.header {
+    background-color: black;
+    width: 100%;
+    position: absolute;
+    top:0;
+    height: 160px;
+    color: white
+}
+
+.footer {
+    background-color: black;
+    width: 100%;
+    position: absolute;
+    height: 28px;
+    bottom:0;
+    color: white;
+}
+
+.song-info {
+    margin: 14px 20px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 99;
+    position: relative;
+    text-shadow: 4px 4px 2px black; 
+}
+
+.battery {
+    font-family: monospace;
+    font-size: 16px;
+    position: absolute;
+    right: 20px;
+    bottom: -5px;
+}
+
+i {
+    padding:0px 6px 0 18px;
+}
