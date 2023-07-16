@@ -34,6 +34,8 @@ app.get('/', async(req, res) => {
         }).then(lyrics => {
             console.log('* /', 'Sending Template');
             data.lyrics = ly.processLyrics(lyrics || '');
+            // sets full cover url including server 
+            data.coverurl = `${config.moodeServer}${data.coverurl}`;
             var output = mustache.render(utils.loadTemplate(), data);
             res.send(output);
             console.timeEnd("renderTemplate");
@@ -41,6 +43,37 @@ app.get('/', async(req, res) => {
         .catch(err => {
             console.log('** ERROR', err);
         });
+});
+
+// send screenshot to client
+function sendScreenshot(req, res) {
+    console.time("updateKindle");
+    const kindleStatusString = url.parse(req.url).query;
+
+    console.time("takeScreenshot");
+    screenshot.takeScreenshot(kindleStatusString).then((screenshot) => {
+        console.timeEnd("takeScreenshot");
+
+        if(screenshot) {
+            console.log("** SCREENSHOT OK");
+            res.writeHead(200, {
+                'Content-Type': 'image/png',
+                'Content-Length': screenshot.length,
+                });
+                console.log('* /refresh', 'Sending Screenshot to Kindle');
+            res.end(screenshot);
+        }
+        else {
+            res.writeHead(500);
+            res.end();
+        }
+        console.timeEnd("updateKindle");
+    });
+}
+
+// returns kindle sent image for debugging purpose
+app.get('/image', async(req, res) => {
+    sendScreenshot(req, res);
 });
 
 // kindle server, if a new song is detected screenshots the webpage then sends it to kindle, code: 200
@@ -55,30 +88,9 @@ app.get('/refresh', async(req, res) => {
             const songChanged = dfile && lastSong != dfile;
             
             if (songChanged) {
-                console.time("updateKindle");
                 console.log("** NEW SONG DETECTED");
                 lastSong = dfile;
-                const kindleStatusString = url.parse(req.url).query;
-
-                console.time("takeScreenshot");
-                screenshot.takeScreenshot(kindleStatusString).then((screenshot) => {
-                    console.timeEnd("takeScreenshot");
-
-                    if(screenshot) {
-                        console.log("** SCREENSHOT OK");
-                        res.writeHead(200, {
-                            'Content-Type': 'image/png',
-                            'Content-Length': screenshot.length,
-                            });
-                            console.log('* /refresh', 'Sending Screenshot to Kindle');
-                        res.end(screenshot);
-                    }
-                    else {
-                        res.writeHead(500);
-                        res.end();
-                    }
-                    console.timeEnd("updateKindle");
-                });
+                sendScreenshot(req, res);
             } else {
                 // console.log('* /refresh', 'No Updates Sent', req.url);
                 res.writeHead(204);
