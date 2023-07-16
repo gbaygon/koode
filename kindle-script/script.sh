@@ -1,10 +1,7 @@
 # prevent screensaver
 lipc-set-prop -- com.lab126.powerd preventScreenSaver 1
 
-ADDR=$(ifconfig wlan0 | grep "inet addr")
-BATTERY=$(lipc-get-prop -- com.lab126.powerd status | grep "Battery Level")
-
-SERVER="http://192.168.0.138:8080"
+SERVER="http://192.168.0.138:8080/refresh"
 
 update_screen () {
          eips -c
@@ -15,6 +12,9 @@ update_screen () {
 trap 'echo "*** EXITING ***"; exit' INT
 while true
 do
+       	ADDR=$(ifconfig wlan0 | grep "inet addr")
+       	BATTERY=$(lipc-get-prop -- com.lab126.powerd status | grep "Battery Level")
+
        	status_code=$(curl -m 20 -X GET -G $SERVER --write-out '%{http_code}' --silent -o status.png --data-urlencode "addr=$ADDR" --data-urlencode "battery=$BATTERY")
        	echo "response: $status_code"
 
@@ -24,5 +24,5 @@ do
        	else
                	echo "** No Updates Received"
        	fi
-       	sleep 2
+       	sleep 5
 done
